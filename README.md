@@ -1,5 +1,5 @@
 # covid19-update-ee
-##Last update about Covid-19 in Estonia
+## Last update about Covid-19 in Estonia
 
 The project is intended to provide a ticker with the **last update about Covid-19 in Estonia**.
 
