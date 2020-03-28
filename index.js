@@ -3,22 +3,23 @@ const axios = require("axios");
 
 let timestamp = new Date();
 let date = timestamp.getDate() + ("0" + (timestamp.getMonth() + 1)).slice(-2) + timestamp.getFullYear();
-let siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
+//const siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-27032020";
+let url = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
 
 let title = "";
 let texts = "";
-let parsedTexts = "";
+let content = "";
 
 const fetchData = async () => {
 
     try {
-        let result = await axios.get(siteUrl);
+        let result = await axios.get(url);
         return cheerio.load(result.data);
     } catch (err) {
         try{
             date = (timestamp.getDate()-1) + ("0" + (timestamp.getMonth() + 1)).slice(-2) + timestamp.getFullYear();
-            siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
-            result = await axios.get(siteUrl);
+            url = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
+            result = await axios.get(url);
             return cheerio.load(result.data);
         } catch (err){
             throw (err);
@@ -39,12 +40,15 @@ exports.handler = async () => {
     
     title = $('.content > .title').text();
     texts = $('.field-item p').text();
-    parsedTexts = texts.substr(0, texts.indexOf("Nendest:")).trim();
+    content = texts.substr(0, texts.indexOf("Nendest:")).trim();
 
     
     return {
         date,
         title,
-        parsedTexts,
+        content,
+        url,
     };
 };
+
+exports.handler();
