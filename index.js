@@ -1,9 +1,9 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 
-let d = new Date();
-let today = d.getDate() + ("0" + (d.getMonth() + 1)).slice(-2) + d.getFullYear();
-let siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + today;
+let timestamp = new Date();
+let date = timestamp.getDate() + ("0" + (timestamp.getMonth() + 1)).slice(-2) + timestamp.getFullYear();
+let siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
 
 let title = "";
 let texts = "";
@@ -16,8 +16,8 @@ const fetchData = async () => {
         return cheerio.load(result.data);
     } catch (err) {
         try{
-            today = (d.getDate()-1) + ("0" + (d.getMonth() + 1)).slice(-2) + d.getFullYear();
-            siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + today;
+            date = (timestamp.getDate()-1) + ("0" + (timestamp.getMonth() + 1)).slice(-2) + timestamp.getFullYear();
+            siteUrl = "https://www.terviseamet.ee/et/uudised/Covid-19-andmed-" + date;
             result = await axios.get(siteUrl);
             return cheerio.load(result.data);
         } catch (err){
@@ -43,6 +43,7 @@ exports.handler = async () => {
 
     
     return {
+        date,
         title,
         parsedTexts,
     };
